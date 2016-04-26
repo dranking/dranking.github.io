@@ -6,6 +6,7 @@
       
       <link href='https://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
       
+      <script type="text/javascript" src="http://www.cs.unc.edu/Courses/comp426-f15/jquery-1.11.3.js"></script>
       
       <style>
           body{
@@ -15,7 +16,7 @@
           }
           h1{
               font-family: "Permanent Marker", cursive;
-              font-size: 200px;
+              font-size: 250px;
               color: #00FF00;
           }
           .blink {
@@ -32,14 +33,81 @@
             visibility: hidden;
           }
         }
+          div.a {
+            width: 50px;
+            height:50px;
+            background-color:blue;
+            position:fixed;
+            }
+          
       </style>
+      
+       <script>
+        
+           $(document).ready(function(){
+               animateDiv();
+           });
+
+        function makeNewPosition(){
+
+            // Get viewport dimensions (remove the dimension of the div)
+            var h = $(window).height() - 50;
+            var w = $(window).width() - 50;
+
+            var nh = Math.floor(Math.random() * h);
+            var nw = Math.floor(Math.random() * w);
+
+            return [nh,nw];    
+
+        }
+
+        function animateDiv(){
+            var newq = makeNewPosition();
+            var oldq = $('.a').offset();
+            var speed = calcSpeed([oldq.top, oldq.left], newq);
+
+            $('.a').animate({ top: newq[0], left: newq[1] }, speed, function(){
+              animateDiv();        
+            });
+
+        };
+
+        function calcSpeed(prev, next) {
+
+            var x = Math.abs(prev[1] - next[1]);
+            var y = Math.abs(prev[0] - next[0]);
+
+            var greatest = x > y ? x : y;
+
+            var speedModifier = 0.5;
+
+            var speed = Math.ceil(greatest/speedModifier);
+
+            return speed;
+
+        }
+           
+           
+           //function myFunction() {
+           //     document.getElementById("demo").innerHTML = "Paragraph changed.";
+          // }
+
+      </script>
 
   </head>
+    
   <body>
       <center><h1><span class="blink">#YES</span></h1></center>
       
       <center><h2>#LDOC #2K16!!!!</h2></center>
+
       
-      <center><img src="doge1.jpg"></center>
+      <div class='a'><img src="doge1.jpg"></div>
+      
+     <!-- <p id="demo">A Paragraph.</p>
+
+<button type="button" onclick="myFunction()">Try it</button>-->
+      
+     
   </body>
 </html>
